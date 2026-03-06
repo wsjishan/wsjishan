@@ -1,0 +1,151 @@
+/**
+ * apply-move.js
+ *
+ * Reads the GitHub issue title from the ISSUE_TITLE environment variable,
+ * validates the move, updates game/state.json, and writes a result output
+ * for the GitHub Actions workflow to branch on.
+ *
+ * Outputs (via GITHUB_OUTPUT file):
+ *   result = "skipped"  — issue title is not a move command; do nothing
+ *   result = "invalid"  — move was a valid format but cannot be applied
+ *   result = "success"  — move was applied and state.json was updated
+ */
+
+'use strict';
+
+const fs = require('fs');
+const path = require('path');
+
+// ---------------------------------------------------------------------------
+// Constants
+// ---------------------------------------------------------------------------
+
+const STATE_FILE = path.join(__dirname, 'state.json');
+
+const VALID_CELLS = ['A1', 'A2', 'A3', 'B1', 'B2', 'B3', 'C1', 'C2', 'C3'];
+
+const WIN_COMBOS = [
+  // Rows
+  ['A1', 'A2', 'A3'],
+  ['B1', 'B2', 'B3'],
+  ['C1', 'C2', 'C3'],
+  // Columns
+  ['A1', 'B1', 'C1'],
+  ['A2', 'B2', 'C2'],
+  ['A3', 'B3', 'C3'],
+  // Diagonals
+  ['A1', 'B2', 'C3'],
+  ['A3', 'B2', 'C1'],
+];
+
+// ---------------------------------------------------------------------------
+// Helpers
+// ---------------------------------------------------------------------------
+
+/** Write a step output to the GITHUB_OUTPUT file (or log locally). */
+function setOutput(name, value) {
+  const outputFile = process.env.GITHUB_OUTPUT;
+  if (outputFile) {
+    // Simple single-line values only — no newlines in name or value.
+    fs.appendFileSync(outputFile, `${name}=${value}\n`);
+  } else {
+    console.log(`[output] ${name}=${value}`);
+  }
+}
+
+/** Return the winning player symbol, or null if no winner yet. */
+function checkWinner(board) {
+  for (const [a, b, c] of WIN_COMBOS) {
+    if (board[a] && board[a] === board[b] && board[a] === board[c]) {
+      return board[a]; // 'X' or 'O'
+    }
+  }
+  return null;
+}
+
+/** Return true when every cell is filled (and no winner was found). */
+function checkDraw(board) {
+  return Object.values(board).every((cell) => cell !== null);
+}
+
+// ---------------------------------------------------------------------------
+// Main
+// ---------------------------------------------------------------------------
+
+function main() {
+  const issueTitle = (process.env.ISSUE_TITLE || '').trim();
+  console.log(`Issue title: "${issueTitle}"`);
+
+  // --- 1. Check that the issue title is a move command ---
+  // Expected format: "Move: B2"  (case-insensitive)
+  const match = issueTitle.match(/^Move:\s*([A-C][1-3])$/i);
+  if (!match) {
+    console.log('Title does not match move pattern — skipping.');
+    setOutput('result', 'skipped');
+    return;
+  }
+
+  const cell = match[1].toUpperCase(); // normalise to e.g. "B2"
+
+  // --- 2. Load current state ---
+  let state;
+  try {
+    state = JSON.parse(fs.readFileSync(STATE_FILE, 'utf8'));
+  } catch (err) {
+    console.error(`Failed to read state file: ${err.message}`);
+    setOutput('result', 'skipped');
+    return;
+  }
+
+  // --- 3. Validate the move ---
+  if (state.gameOver) {
+    console.log('Game is already over — move rejected.');
+    setOutput('result', 'invalid');
+    return;
+  }
+
+  if (!VALID_CELLS.includes(cell)) {
+    console.log(`"${cell}" is not a valid cell — move rejected.`);
+    setOutput('result', 'invalid');
+    return;
+  }
+
+  if (state.board[cell] !== null) {
+    console.log(
+      `Cell ${cell} is already occupied by ${state.board[cell]} — move rejected.`
+    );
+    setOutput('result', 'invalid');
+    return;
+  }
+
+  // --- 4. Apply the move ---
+  state.board[cell] = state.currentPlayer;
+  state.moveCount += 1;
+  state.lastMove = cell;
+
+  console.log(`Applied: ${state.currentPlayer} → ${cell}`);
+
+  // --- 5. Check game-ending conditions ---
+  const winner = checkWinner(state.board);
+  if (winner) {
+    state.winner = winner;
+    state.gameOver = true;
+    console.log(`Winner: ${winner}`);
+  } else if (checkDraw(state.board)) {
+    state.draw = true;
+    state.gameOver = true;
+    console.log('Result: draw');
+  } else {
+    // Switch to the other player
+    state.currentPlayer = state.currentPlayer === 'X' ? 'O' : 'X';
+    console.log(`Next player: ${state.currentPlayer}`);
+  }
+
+  // --- 6. Persist updated state ---
+  fs.writeFileSync(STATE_FILE, JSON.stringify(state, null, 2) + '\n');
+  console.log('state.json saved.');
+
+  setOutput('result', 'success');
+}
+
+main();

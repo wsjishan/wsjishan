@@ -1,0 +1,89 @@
+# GitHub Actions workflow — Tic-Tac-Toe Move
+#
+# Triggered every time a new issue is opened.
+# Steps:
+#   1. Try to apply the move from the issue title.
+#   2. If valid, render the README and commit the change.
+#   3. Comment on (and close) the issue with the result.
+#   4. Unrelated issues are silently ignored (result = skipped).
+
+name: Tic-Tac-Toe Move
+
+on:
+  issues:
+    types: [opened]
+
+permissions:
+  contents: write # push commits
+  issues: write # comment and close issues
+
+# Serialise concurrent moves so two simultaneous clicks never corrupt state.
+concurrency:
+  group: tictactoe-move
+  cancel-in-progress: false
+
+jobs:
+  move:
+    runs-on: ubuntu-latest
+
+    steps:
+      # ── 1. Checkout ────────────────────────────────────────────────────────
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # ── 2. Setup Node ──────────────────────────────────────────────────────
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      # ── 3. Apply move ──────────────────────────────────────────────────────
+      # Writes `result` to GITHUB_OUTPUT: skipped | invalid | success
+      - name: Apply move
+        id: apply
+        env:
+          ISSUE_TITLE: ${{ github.event.issue.title }}
+        run: node game/apply-move.js
+
+      # ── 4. Render README (success only) ────────────────────────────────────
+      - name: Render README
+        if: steps.apply.outputs.result == 'success'
+        env:
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: node game/render.js
+
+      # ── 5. Commit & push (success only) ────────────────────────────────────
+      - name: Commit and push
+        if: steps.apply.outputs.result == 'success'
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add README.md game/state.json
+          # Only commit if something actually changed
+          git diff --staged --quiet || \
+            git commit -m "♟️ ${{ github.event.issue.title }} by @${{ github.event.issue.user.login }}"
+          git push
+
+      # ── 6. Comment + close on success ──────────────────────────────────────
+      - name: Comment and close issue (success)
+        if: steps.apply.outputs.result == 'success'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh issue comment ${{ github.event.issue.number }} \
+            --body "✅ **Move recorded!** The board has been updated.\
+          See the [README](https://github.com/${{ github.repository }}/blob/main/README.md) for the current state. 🎮"
+          gh issue close ${{ github.event.issue.number }}
+
+      # ── 7. Comment + close on invalid move ─────────────────────────────────
+      - name: Comment and close issue (invalid)
+        if: steps.apply.outputs.result == 'invalid'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh issue comment ${{ github.event.issue.number }} \
+            --body "❌ **Invalid move.** The cell may already be occupied, or the game is already over.\
+          Check the [README](https://github.com/${{ github.repository }}/blob/main/README.md) for the current board."
+          gh issue close ${{ github.event.issue.number }}
+
+      # (skipped result → no action taken, issue left untouched)

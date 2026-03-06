@@ -1,0 +1,46 @@
+# GitHub Actions workflow — Reset Tic-Tac-Toe
+#
+# Run this manually from the Actions tab (workflow_dispatch) to wipe the
+# board and start a brand-new game.
+
+name: Reset Tic-Tac-Toe
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write # push the reset commit
+
+jobs:
+  reset:
+    runs-on: ubuntu-latest
+
+    steps:
+      # ── 1. Checkout ────────────────────────────────────────────────────────
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # ── 2. Setup Node ──────────────────────────────────────────────────────
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      # ── 3. Reset state ─────────────────────────────────────────────────────
+      - name: Reset game state
+        run: node game/reset.js
+
+      # ── 4. Render README ───────────────────────────────────────────────────
+      - name: Render README
+        env:
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: node game/render.js
+
+      # ── 5. Commit & push ───────────────────────────────────────────────────
+      - name: Commit and push
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add README.md game/state.json
+          git diff --staged --quiet || git commit -m "🔄 Reset Tic-Tac-Toe game"
+          git push

@@ -1,8 +1,5 @@
-## 🎮 Community Tic-Tac-Toe
-
 <!-- TICTACTOE-START -->
-
-## 🎮 Tic-Tac-Toe
+## 🎮 Community Tic-Tac-Toe
 
 Current Game: #3
 

@@ -6,14 +6,14 @@
     "B1": null,
     "B2": "X",
     "B3": null,
-    "C1": null,
+    "C1": "O",
     "C2": null,
     "C3": null
   },
-  "currentPlayer": "O",
+  "currentPlayer": "X",
   "winner": null,
   "draw": false,
   "gameOver": false,
-  "moveCount": 3,
-  "lastMove": "B2"
+  "moveCount": 4,
+  "lastMove": "C1"
 }

@@ -196,7 +196,7 @@ function renderSection(state, repoUrl) {
   const stats = renderStats(state);
 
   return [
-    '## 🎮 Tic-Tac-Toe',
+    '## 🎮 Community Tic-Tac-Toe',
     '',
     `Current Game: ${gameNum}`,
     '',

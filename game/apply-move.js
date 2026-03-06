@@ -68,7 +68,7 @@ function checkDraw(board) {
   return Object.values(board).every((cell) => cell !== null);
 }
 
-/** Reset the active game fields back to a fresh empty board. */
+/** Reset the active game fields back to a fresh empty board, incrementing the game number. */
 function resetActiveGame(state) {
   state.board = {
     A1: null,
@@ -87,6 +87,8 @@ function resetActiveGame(state) {
   state.gameOver = false;
   state.moveCount = 0;
   state.lastMove = null;
+  state.lastMovePlayer = null;
+  state.gameNumber = (state.gameNumber || 1) + 1;
 }
 
 // ---------------------------------------------------------------------------
@@ -95,7 +97,8 @@ function resetActiveGame(state) {
 
 function main() {
   const issueTitle = (process.env.ISSUE_TITLE || '').trim();
-  console.log(`Issue title: "${issueTitle}"`);
+  const issueUser = (process.env.ISSUE_USER || '').trim() || 'unknown';
+  console.log(`Issue title: "${issueTitle}" from @${issueUser}`);
 
   // --- 1. Check that the issue title is a move command ---
   // Expected format: "Move: B2"  (case-insensitive)
@@ -122,12 +125,14 @@ function main() {
   if (state.gameOver) {
     console.log('Game is already over — move rejected.');
     setOutput('result', 'invalid');
+    setOutput('invalid_reason', 'gameover');
     return;
   }
 
   if (!VALID_CELLS.includes(cell)) {
     console.log(`"${cell}" is not a valid cell — move rejected.`);
     setOutput('result', 'invalid');
+    setOutput('invalid_reason', 'invalid_cell');
     return;
   }
 
@@ -136,6 +141,7 @@ function main() {
       `Cell ${cell} is already occupied by ${state.board[cell]} — move rejected.`
     );
     setOutput('result', 'invalid');
+    setOutput('invalid_reason', 'taken');
     return;
   }
 
@@ -143,8 +149,14 @@ function main() {
   state.board[cell] = state.currentPlayer;
   state.moveCount += 1;
   state.lastMove = cell;
+  state.lastMovePlayer = issueUser;
 
-  console.log(`Applied: ${state.currentPlayer} → ${cell}`);
+  console.log(`Applied: ${state.currentPlayer} → ${cell} by @${issueUser}`);
+
+  // Ensure stats object exists (backwards compatibility)
+  if (!state.stats) {
+    state.stats = { xWins: 0, oWins: 0, draws: 0 };
+  }
 
   // --- 5. Check game-ending conditions ---
   const winner = checkWinner(state.board);
@@ -158,7 +170,11 @@ function main() {
       draw: false,
       finishedAt: new Date().toISOString(),
       finalMove: cell,
+      player: issueUser,
+      gameNumber: state.gameNumber || 1,
     };
+    if (winner === 'X') state.stats.xWins += 1;
+    else state.stats.oWins += 1;
     gameEndedMsg = `${winner} won the game on ${cell}. A new game has started.`;
     console.log(`Winner: ${winner} — resetting board.`);
     resetActiveGame(state);
@@ -170,7 +186,10 @@ function main() {
       draw: true,
       finishedAt: new Date().toISOString(),
       finalMove: cell,
+      player: issueUser,
+      gameNumber: state.gameNumber || 1,
     };
+    state.stats.draws += 1;
     gameEndedMsg = `The game ended in a draw on ${cell}. A new game has started.`;
     console.log('Result: draw — resetting board.');
     resetActiveGame(state);

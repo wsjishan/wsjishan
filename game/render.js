@@ -142,6 +142,8 @@ function renderLastGame(state) {
     return '### 📋 Last Game\nNo completed games yet.';
   }
 
+  const gameNumLabel = lcg.gameNumber ? ` #${lcg.gameNumber}` : '';
+
   // Format ISO timestamp → "2026-03-06 14:22 UTC" (no external deps)
   const dt = new Date(lcg.finishedAt);
   const pad = (n) => String(n).padStart(2, '0');
@@ -159,12 +161,26 @@ function renderLastGame(state) {
   ].join('');
 
   const resultLabel = lcg.draw ? '🤝 Draw' : `🏆 ${lcg.result}`;
+  const moveLabel = lcg.player
+    ? `**${lcg.finalMove}** by @${lcg.player}`
+    : `**${lcg.finalMove}**`;
 
   return [
-    '### 📋 Last Game',
+    `### 📋 Last Game${gameNumLabel}`,
     `- Result: **${resultLabel}**`,
+    `- Winning move: ${moveLabel}`,
     `- Finished: ${readable}`,
-    `- Final move: **${lcg.finalMove}**`,
+  ].join('\n');
+}
+
+/** Render the lifetime stats block. */
+function renderStats(state) {
+  const s = state.stats || { xWins: 0, oWins: 0, draws: 0 };
+  return [
+    '### 📊 Stats',
+    `- ${EMOJI.X} X wins: **${s.xWins}**`,
+    `- ${EMOJI.O} O wins: **${s.oWins}**`,
+    `- 🤝 Draws: **${s.draws}**`,
   ].join('\n');
 }
 
@@ -172,21 +188,37 @@ function renderLastGame(state) {
 function renderSection(state, repoUrl) {
   const board = renderBoard(state, repoUrl);
   const status = renderStatus(state);
+  const gameNum = `#${state.gameNumber || 1}`;
+  const lastGameNum =
+    state.lastCompletedGame && state.lastCompletedGame.gameNumber
+      ? `#${state.lastCompletedGame.gameNumber}`
+      : null;
   const lastMove = state.lastMove
-    ? `Last move: **${state.lastMove}**`
+    ? `Last move: **${state.lastMove}**${state.lastMovePlayer ? ` by @${state.lastMovePlayer}` : ''}`
     : 'No moves yet.';
   const lastGame = renderLastGame(state);
+  const stats = renderStats(state);
+
+  const gameHeader = lastGameNum
+    ? `🔢 **Current Game: ${gameNum}** | 📋 Last Game: ${lastGameNum}`
+    : `🔢 **Current Game: ${gameNum}**`;
 
   return [
     '## 🎮 Tic-Tac-Toe',
     '',
     '> Play against the community! Click an empty square ⬜ to make your move.',
     '',
+    gameHeader,
+    '',
     lastGame,
+    '',
+    stats,
     '',
     '---',
     '',
     status,
+    '',
+    'Click an empty square ⬜ to play your move.',
     '',
     board,
     '',

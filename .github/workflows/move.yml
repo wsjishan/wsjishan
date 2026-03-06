@@ -42,8 +42,7 @@ jobs:
       - name: Apply move
         id: apply
         env:
-          ISSUE_TITLE: ${{ github.event.issue.title }}
-        run: node game/apply-move.js
+          ISSUE_TITLE: ${{ github.event.issue.title }}          ISSUE_USER: ${{ github.event.issue.user.login }}        run: node game/apply-move.js
 
       # ── 4. Render README (success only) ────────────────────────────────────
       - name: Render README
@@ -86,10 +85,15 @@ jobs:
         if: steps.apply.outputs.result == 'invalid'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          INVALID_REASON: ${{ steps.apply.outputs.invalid_reason }}
         run: |
-          gh issue comment ${{ github.event.issue.number }} \
-            --body "❌ **Invalid move.** The cell may already be occupied, or the game is already over.\
-          Check the [README](https://github.com/${{ github.repository }}/blob/main/README.md) for the current board."
+          README_URL="https://github.com/${{ github.repository }}/blob/main/README.md"
+          if [ "$INVALID_REASON" = "taken" ]; then
+            MSG="❌ **That square is already taken.** Please choose another square. Check the [README](${README_URL}) for the current board."
+          else
+            MSG="❌ **Invalid move.** The game may already be over. Check the [README](${README_URL}) for the current board."
+          fi
+          gh issue comment ${{ github.event.issue.number }} --body "$MSG"
           gh issue close ${{ github.event.issue.number }}
 
       # (skipped result → no action taken, issue left untouched)

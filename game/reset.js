@@ -39,6 +39,10 @@ const resetState = {
   gameOver: false,
   moveCount: 0,
   lastMove: null,
+  lastMovePlayer: null,
+  // Preserve the game number and stats across manual resets (not a finished game).
+  gameNumber: existing.gameNumber || 1,
+  stats: existing.stats || { xWins: 0, oWins: 0, draws: 0 },
   // Preserve the previous completed game summary across manual resets.
   lastCompletedGame: existing.lastCompletedGame || {
     result: null,
@@ -46,6 +50,8 @@ const resetState = {
     draw: false,
     finishedAt: null,
     finalMove: null,
+    player: null,
+    gameNumber: null,
   },
 };
 

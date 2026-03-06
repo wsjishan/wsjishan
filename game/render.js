@@ -159,7 +159,7 @@ function renderLastGame(state) {
 
   const resultLabel = lcg.draw ? '🤝 Draw' : `🏆 ${lcg.result}`;
   const moveLabel = lcg.player
-    ? `${lcg.finalMove} by @${lcg.player}`
+    ? `${lcg.finalMove} by [@${lcg.player}](https://github.com/${lcg.player})`
     : lcg.finalMove;
 
   return [
@@ -190,7 +190,7 @@ function renderSection(state, repoUrl) {
       ? `#${state.lastCompletedGame.gameNumber}`
       : null;
   const lastMove = state.lastMove
-    ? `Last move: ${state.lastMove}${state.lastMovePlayer ? ` by @${state.lastMovePlayer}` : ''}`
+    ? `Last move: ${state.lastMove}${state.lastMovePlayer ? ` by [@${state.lastMovePlayer}](https://github.com/${state.lastMovePlayer})` : ''}`
     : 'No moves yet.';
   const lastGame = renderLastGame(state);
   const stats = renderStats(state);

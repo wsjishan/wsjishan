@@ -162,22 +162,13 @@ function renderLastGame(state) {
     ? `${lcg.finalMove} by [@${lcg.player}](https://github.com/${lcg.player})`
     : lcg.finalMove;
 
-  return [
-    `📋 Last Game${gameNumLabel} — ${resultLabel}`,
-    `Winning move: ${moveLabel}`,
-    `Finished: ${readable}`,
-  ].join('\n');
+  return `📋 Last Game${gameNumLabel} — ${resultLabel}\nWinning move: ${moveLabel} • Finished: ${readable}`;
 }
 
 /** Render the lifetime stats block. */
 function renderStats(state) {
   const s = state.stats || { xWins: 0, oWins: 0, draws: 0 };
-  return [
-    '📊 Stats',
-    `${EMOJI.X} X wins: ${s.xWins}`,
-    `${EMOJI.O} O wins: ${s.oWins}`,
-    `🤝 Draws: ${s.draws}`,
-  ].join('\n');
+  return `📊 Stats — ${EMOJI.X} ${s.xWins} | ${EMOJI.O} ${s.oWins} | 🤝 ${s.draws}`;
 }
 
 /** Build the full fenced section that goes between the markers. */
@@ -191,12 +182,14 @@ function renderSection(state, repoUrl) {
       : null;
   const lastMove = state.lastMove
     ? `Last move: ${state.lastMove}${state.lastMovePlayer ? ` by [@${state.lastMovePlayer}](https://github.com/${state.lastMovePlayer})` : ''}`
-    : 'No moves yet.';
+    : null;
   const lastGame = renderLastGame(state);
   const stats = renderStats(state);
 
   return [
-    '## 🎮 Community Tic-Tac-Toe',
+    '# 🎮 Community Tic-Tac-Toe',
+    '',
+    'Play against the community directly from my GitHub profile.',
     '',
     `Current Game: ${gameNum}`,
     '',
@@ -208,11 +201,11 @@ function renderSection(state, repoUrl) {
     '',
     status,
     '',
-    'Click an empty square 🔲 to play your move.',
+    '👉 Click any empty square to make the next move.',
     '',
     board,
     '',
-    `📍 ${lastMove}`,
+    lastMove ? `🎯 ${lastMove}` : '🎯 Waiting for the first move...',
   ].join('\n');
 }
 

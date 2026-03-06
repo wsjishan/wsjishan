@@ -218,8 +218,6 @@ function renderSection(state, repoUrl) {
     board,
     '',
     `📌 ${lastMove}`,
-    '',
-    '> Each click opens a pre-filled GitHub Issue — the board updates automatically via Actions.',
   ].join('\n');
 }
 

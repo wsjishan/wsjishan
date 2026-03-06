@@ -40,6 +40,7 @@ const resetState = {
   moveCount: 0,
   lastMove: null,
   lastMovePlayer: null,
+  botLastMove: null,
   // Preserve the game number and stats across manual resets (not a finished game).
   gameNumber: existing.gameNumber || 1,
   stats: existing.stats || { xWins: 0, oWins: 0, draws: 0 },
@@ -51,6 +52,7 @@ const resetState = {
     finishedAt: null,
     finalMove: null,
     player: null,
+    wonByBot: false,
     gameNumber: null,
   },
 };

@@ -117,14 +117,17 @@ function renderBoard(state, repoUrl) {
 /** One-line status: whose turn / winner / draw. */
 function renderStatus(state) {
   if (state.gameOver) {
-    if (state.winner) {
-      return `🏆 **Game over — ${EMOJI[state.winner]} ${state.winner} wins!**`;
+    if (state.winner === 'X') {
+      return `🏆 **Game over — You win!**`;
+    }
+    if (state.winner === 'O') {
+      return `🤖 **Game over — The bot wins!**`;
     }
     if (state.draw) {
       return `🤝 **Game over — It's a draw!**`;
     }
   }
-  return `▶ Current turn: ${EMOJI[state.currentPlayer]} ${state.currentPlayer}`;
+  return `▶ **Your turn!** You are ${EMOJI.X} X — click an empty square below.`;
 }
 
 /** Render the "Last Game" summary block. */
@@ -152,10 +155,17 @@ function renderLastGame(state) {
     ' UTC',
   ].join('');
 
-  const resultLabel = lcg.draw ? '🤝 Draw' : `🏆 ${lcg.result}`;
-  const moveLabel = lcg.player
-    ? `${lcg.finalMove} by [@${lcg.player}](https://github.com/${lcg.player})`
-    : lcg.finalMove;
+  const resultLabel = lcg.draw
+    ? '🤝 Draw'
+    : lcg.wonByBot
+      ? '🤖 Bot won'
+      : '🏆 You won';
+
+  const moveLabel = lcg.wonByBot
+    ? `${lcg.finalMove} by 🤖 Bot`
+    : lcg.player
+      ? `${lcg.finalMove} by [@${lcg.player}](https://github.com/${lcg.player})`
+      : lcg.finalMove;
 
   return [
     `📋 Last Game${gameNumLabel} — ${resultLabel}`,
@@ -166,7 +176,7 @@ function renderLastGame(state) {
 /** Render the lifetime stats block. */
 function renderStats(state) {
   const s = state.stats || { xWins: 0, oWins: 0, draws: 0 };
-  return `📊 Stats — ${EMOJI.X} X wins: ${s.xWins} | ${EMOJI.O} O wins: ${s.oWins} | 🤝 Draws: ${s.draws}`;
+  return `📊 Stats — ${EMOJI.X} Your wins: ${s.xWins} | 🤖 Bot wins: ${s.oWins} | 🤝 Draws: ${s.draws}`;
 }
 
 /** Render the top-players leaderboard. */
@@ -189,37 +199,37 @@ function renderSection(state, repoUrl) {
   const board = renderBoard(state, repoUrl);
   const status = renderStatus(state);
   const gameNum = `#${state.gameNumber || 1}`;
-  const lastGameNum =
-    state.lastCompletedGame && state.lastCompletedGame.gameNumber
-      ? `#${state.lastCompletedGame.gameNumber}`
-      : null;
-  const lastMove = state.lastMove
-    ? `Last move: ${state.lastMove}${state.lastMovePlayer ? ` by [@${state.lastMovePlayer}](https://github.com/${state.lastMovePlayer})` : ''}`
-    : null;
   const lastGame = renderLastGame(state);
   const stats = renderStats(state);
-  const leaderboard = renderLeaderboard(state);
+
+  const lastMoveLine = state.lastMove
+    ? `🎯 Your last move: **${state.lastMove}**${
+        state.botLastMove
+          ? ` | 🤖 Bot's last move: **${state.botLastMove}**`
+          : ''
+      }`
+    : '🎯 Waiting for the first move...';
 
   return [
-    '## 🎮 Tic-Tac-Toe',
+    '## 🎮 Tic-Tac-Toe — Player vs Random Bot',
     '',
-    `Current Game: ${gameNum}`,
+    'Play against a random bot directly from my GitHub profile.',
+    '',
+    `**You are ${EMOJI.X} X.** The bot is ${EMOJI.O} O. | Current Game: ${gameNum}`,
     '',
     lastGame,
     '',
     stats,
     '',
-    leaderboard,
-    '',
     '---',
     '',
     status,
     '',
-    'Click an empty square 🔲 to play your move.',
+    'Click an empty 🟦 to make your move. The bot will respond instantly.',
     '',
     board,
     '',
-    lastMove ? `🎯 ${lastMove}` : '🎯 Waiting for the first move...',
+    lastMoveLine,
   ].join('\n');
 }
 

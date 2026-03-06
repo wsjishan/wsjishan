@@ -88,6 +88,7 @@ function resetActiveGame(state) {
   state.moveCount = 0;
   state.lastMove = null;
   state.lastMovePlayer = null;
+  state.botLastMove = null;
   state.gameNumber = (state.gameNumber || 1) + 1;
 }
 
@@ -145,47 +146,44 @@ function main() {
     return;
   }
 
-  // --- 4. Apply the move ---
-  state.board[cell] = state.currentPlayer;
+  // --- 4. Apply the HUMAN (X) move ---
+  state.board[cell] = 'X';
   state.moveCount += 1;
   state.lastMove = cell;
   state.lastMovePlayer = issueUser;
 
-  console.log(`Applied: ${state.currentPlayer} → ${cell} by @${issueUser}`);
+  console.log(`Applied: X → ${cell} by @${issueUser}`);
 
   // Ensure stats object exists (backwards compatibility)
   if (!state.stats) {
     state.stats = { xWins: 0, oWins: 0, draws: 0 };
   }
+  if (!state.players) state.players = {};
+  if (!state.players[issueUser]) state.players[issueUser] = 0;
 
-  // --- 5. Check game-ending conditions ---
+  // --- 5. Check game-ending conditions after human move ---
   const winner = checkWinner(state.board);
   let gameEndedMsg = null;
 
   if (winner) {
-    // Save completed game summary, then immediately start a new game
+    // Human won — bot does NOT move
     state.lastCompletedGame = {
-      result: `${winner} won`,
-      winner,
+      result: 'X won',
+      winner: 'X',
       draw: false,
       finishedAt: new Date().toISOString(),
       finalMove: cell,
       player: issueUser,
+      wonByBot: false,
       gameNumber: state.gameNumber || 1,
     };
-    if (winner === 'X') state.stats.xWins += 1;
-    else state.stats.oWins += 1;
-
-    // Track per-player wins
-    if (!state.players) state.players = {};
-    if (!state.players[issueUser]) state.players[issueUser] = 0;
+    state.stats.xWins += 1;
     state.players[issueUser] += 1;
-
-    gameEndedMsg = `${winner} won the game on ${cell}. A new game has started.`;
-    console.log(`Winner: ${winner} — resetting board.`);
+    gameEndedMsg = `You won the game on ${cell}! A new game has started.`;
+    console.log('Winner: X (human) — resetting board.');
     resetActiveGame(state);
   } else if (checkDraw(state.board)) {
-    // Save completed game summary, then immediately start a new game
+    // Draw on human's move
     state.lastCompletedGame = {
       result: 'Draw',
       winner: null,
@@ -193,16 +191,60 @@ function main() {
       finishedAt: new Date().toISOString(),
       finalMove: cell,
       player: issueUser,
+      wonByBot: false,
       gameNumber: state.gameNumber || 1,
     };
     state.stats.draws += 1;
     gameEndedMsg = `The game ended in a draw on ${cell}. A new game has started.`;
-    console.log('Result: draw — resetting board.');
+    console.log('Result: draw after human move — resetting board.');
     resetActiveGame(state);
   } else {
-    // Game continues — switch to the other player
-    state.currentPlayer = state.currentPlayer === 'X' ? 'O' : 'X';
-    console.log(`Next player: ${state.currentPlayer}`);
+    // --- 6. Game continues — BOT (O) plays ---
+    const emptyCells = Object.entries(state.board)
+      .filter(([, value]) => value === null)
+      .map(([c]) => c);
+
+    const botMove = emptyCells[Math.floor(Math.random() * emptyCells.length)];
+    state.board[botMove] = 'O';
+    state.moveCount += 1;
+    state.botLastMove = botMove;
+    console.log(`Bot played: O → ${botMove}`);
+
+    // --- 7. Check game-ending conditions after bot move ---
+    const botWinner = checkWinner(state.board);
+
+    if (botWinner) {
+      state.lastCompletedGame = {
+        result: 'O won',
+        winner: 'O',
+        draw: false,
+        finishedAt: new Date().toISOString(),
+        finalMove: botMove,
+        player: issueUser,
+        wonByBot: true,
+        gameNumber: state.gameNumber || 1,
+      };
+      state.stats.oWins += 1;
+      gameEndedMsg = `The bot won the game on ${botMove}. A new game has started.`;
+      console.log('Winner: O (bot) — resetting board.');
+      resetActiveGame(state);
+    } else if (checkDraw(state.board)) {
+      state.lastCompletedGame = {
+        result: 'Draw',
+        winner: null,
+        draw: true,
+        finishedAt: new Date().toISOString(),
+        finalMove: botMove,
+        player: issueUser,
+        wonByBot: false,
+        gameNumber: state.gameNumber || 1,
+      };
+      state.stats.draws += 1;
+      gameEndedMsg = `The game ended in a draw on ${botMove}. A new game has started.`;
+      console.log('Result: draw after bot move — resetting board.');
+      resetActiveGame(state);
+    }
+    // else game continues; currentPlayer stays 'X' for next human turn
   }
 
   // --- 6. Persist updated state ---

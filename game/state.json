@@ -17,14 +17,12 @@
   "moveCount": 0,
   "lastMove": null,
   "lastMovePlayer": null,
+  "botLastMove": null,
   "gameNumber": 7,
   "stats": {
     "xWins": 3,
     "oWins": 3,
     "draws": 0
-  },
-  "players": {
-    "wsjishan": 6
   },
   "lastCompletedGame": {
     "result": "X won",
@@ -33,6 +31,7 @@
     "finishedAt": "2026-03-06T14:34:32.248Z",
     "finalMove": "C2",
     "player": "wsjishan",
+    "wonByBot": false,
     "gameNumber": 6
   }
 }

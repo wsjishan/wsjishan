@@ -69,10 +69,16 @@ jobs:
         if: steps.apply.outputs.result == 'success'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GAME_ENDED: ${{ steps.apply.outputs.game_ended }}
+          GAME_RESULT_MSG: ${{ steps.apply.outputs.game_result_msg }}
         run: |
-          gh issue comment ${{ github.event.issue.number }} \
-            --body "✅ **Move recorded!** The board has been updated.\
-          See the [README](https://github.com/${{ github.repository }}/blob/main/README.md) for the current state. 🎮"
+          README_URL="https://github.com/${{ github.repository }}/blob/main/README.md"
+          if [ "$GAME_ENDED" = "true" ]; then
+            COMMENT="🎉 **${GAME_RESULT_MSG}** Check the [README](${README_URL}) to play the new game! 🎮"
+          else
+            COMMENT="✅ **Move recorded!** The board has been updated. See the [README](${README_URL}) for the current state. 🎮"
+          fi
+          gh issue comment ${{ github.event.issue.number }} --body "$COMMENT"
           gh issue close ${{ github.event.issue.number }}
 
       # ── 7. Comment + close on invalid move ─────────────────────────────────

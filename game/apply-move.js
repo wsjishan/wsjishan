@@ -68,6 +68,27 @@ function checkDraw(board) {
   return Object.values(board).every((cell) => cell !== null);
 }
 
+/** Reset the active game fields back to a fresh empty board. */
+function resetActiveGame(state) {
+  state.board = {
+    A1: null,
+    A2: null,
+    A3: null,
+    B1: null,
+    B2: null,
+    B3: null,
+    C1: null,
+    C2: null,
+    C3: null,
+  };
+  state.currentPlayer = 'X';
+  state.winner = null;
+  state.draw = false;
+  state.gameOver = false;
+  state.moveCount = 0;
+  state.lastMove = null;
+}
+
 // ---------------------------------------------------------------------------
 // Main
 // ---------------------------------------------------------------------------
@@ -127,16 +148,34 @@ function main() {
 
   // --- 5. Check game-ending conditions ---
   const winner = checkWinner(state.board);
+  let gameEndedMsg = null;
+
   if (winner) {
-    state.winner = winner;
-    state.gameOver = true;
-    console.log(`Winner: ${winner}`);
+    // Save completed game summary, then immediately start a new game
+    state.lastCompletedGame = {
+      result: `${winner} won`,
+      winner,
+      draw: false,
+      finishedAt: new Date().toISOString(),
+      finalMove: cell,
+    };
+    gameEndedMsg = `${winner} won the game on ${cell}. A new game has started.`;
+    console.log(`Winner: ${winner} — resetting board.`);
+    resetActiveGame(state);
   } else if (checkDraw(state.board)) {
-    state.draw = true;
-    state.gameOver = true;
-    console.log('Result: draw');
+    // Save completed game summary, then immediately start a new game
+    state.lastCompletedGame = {
+      result: 'Draw',
+      winner: null,
+      draw: true,
+      finishedAt: new Date().toISOString(),
+      finalMove: cell,
+    };
+    gameEndedMsg = `The game ended in a draw on ${cell}. A new game has started.`;
+    console.log('Result: draw — resetting board.');
+    resetActiveGame(state);
   } else {
-    // Switch to the other player
+    // Game continues — switch to the other player
     state.currentPlayer = state.currentPlayer === 'X' ? 'O' : 'X';
     console.log(`Next player: ${state.currentPlayer}`);
   }
@@ -145,7 +184,12 @@ function main() {
   fs.writeFileSync(STATE_FILE, JSON.stringify(state, null, 2) + '\n');
   console.log('state.json saved.');
 
+  // Expose whether this move ended a game (used by the workflow for comments)
   setOutput('result', 'success');
+  setOutput('game_ended', gameEndedMsg ? 'true' : 'false');
+  if (gameEndedMsg) {
+    setOutput('game_result_msg', gameEndedMsg);
+  }
 }
 
 main();

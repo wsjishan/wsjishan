@@ -1,7 +1,8 @@
 /**
  * reset.js
  *
- * Resets game/state.json to the initial empty-board state.
+ * Resets the active game in state.json back to an empty board.
+ * Preserves lastCompletedGame so history is not lost on a manual reset.
  * The reset.yml workflow runs render.js afterwards to regenerate the README.
  */
 
@@ -12,7 +13,15 @@ const path = require('path');
 
 const STATE_FILE = path.join(__dirname, 'state.json');
 
-const INITIAL_STATE = {
+// Load existing state so we can keep the previous game result.
+let existing = {};
+try {
+  existing = JSON.parse(fs.readFileSync(STATE_FILE, 'utf8'));
+} catch (_) {
+  // File may not exist on first run — that is fine.
+}
+
+const resetState = {
   board: {
     A1: null,
     A2: null,
@@ -30,7 +39,15 @@ const INITIAL_STATE = {
   gameOver: false,
   moveCount: 0,
   lastMove: null,
+  // Preserve the previous completed game summary across manual resets.
+  lastCompletedGame: existing.lastCompletedGame || {
+    result: null,
+    winner: null,
+    draw: false,
+    finishedAt: null,
+    finalMove: null,
+  },
 };
 
-fs.writeFileSync(STATE_FILE, JSON.stringify(INITIAL_STATE, null, 2) + '\n');
-console.log('Game state reset to initial empty board.');
+fs.writeFileSync(STATE_FILE, JSON.stringify(resetState, null, 2) + '\n');
+console.log('Active game reset. Last completed game summary preserved.');

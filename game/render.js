@@ -135,6 +135,39 @@ function renderStatus(state) {
   return `▶️ **Current turn: ${EMOJI[state.currentPlayer]} ${state.currentPlayer}**`;
 }
 
+/** Render the "Last Game" summary block. */
+function renderLastGame(state) {
+  const lcg = state.lastCompletedGame;
+  if (!lcg || !lcg.finishedAt) {
+    return '### 📋 Last Game\nNo completed games yet.';
+  }
+
+  // Format ISO timestamp → "2026-03-06 14:22 UTC" (no external deps)
+  const dt = new Date(lcg.finishedAt);
+  const pad = (n) => String(n).padStart(2, '0');
+  const readable = [
+    dt.getUTCFullYear(),
+    '-',
+    pad(dt.getUTCMonth() + 1),
+    '-',
+    pad(dt.getUTCDate()),
+    ' ',
+    pad(dt.getUTCHours()),
+    ':',
+    pad(dt.getUTCMinutes()),
+    ' UTC',
+  ].join('');
+
+  const resultLabel = lcg.draw ? '🤝 Draw' : `🏆 ${lcg.result}`;
+
+  return [
+    '### 📋 Last Game',
+    `- Result: **${resultLabel}**`,
+    `- Finished: ${readable}`,
+    `- Final move: **${lcg.finalMove}**`,
+  ].join('\n');
+}
+
 /** Build the full fenced section that goes between the markers. */
 function renderSection(state, repoUrl) {
   const board = renderBoard(state, repoUrl);
@@ -142,15 +175,16 @@ function renderSection(state, repoUrl) {
   const lastMove = state.lastMove
     ? `Last move: **${state.lastMove}**`
     : 'No moves yet.';
-
-  const resetNote = state.gameOver
-    ? '\n\n> 🔄 **Start a new game** — go to the **Actions** tab and run the **Reset Tic-Tac-Toe** workflow manually.'
-    : '';
+  const lastGame = renderLastGame(state);
 
   return [
     '## 🎮 Tic-Tac-Toe',
     '',
     '> Play against the community! Click an empty square ⬜ to make your move.',
+    '',
+    lastGame,
+    '',
+    '---',
     '',
     status,
     '',
@@ -159,9 +193,6 @@ function renderSection(state, repoUrl) {
     `📌 ${lastMove}`,
     '',
     '> Each click opens a pre-filled GitHub Issue — the board updates automatically via Actions.',
-    resetNote,
-    '',
-    '---',
     '',
     '_Powered by GitHub Issues + Actions_',
   ].join('\n');

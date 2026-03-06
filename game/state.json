@@ -1,32 +1,26 @@
 {
   "board": {
-    "A1": "O",
-    "A2": "X",
+    "A1": null,
+    "A2": null,
     "A3": null,
     "B1": null,
-    "B2": "X",
+    "B2": null,
     "B3": null,
-    "C1": "O",
-    "C2": "X",
+    "C1": null,
+    "C2": null,
     "C3": null
   },
   "currentPlayer": "X",
-  "winner": "X",
+  "winner": null,
   "draw": false,
-<<<<<<< HEAD
-  "gameOver": true,
-  "moveCount": 5,
-  "lastMove": "C2"
-=======
   "gameOver": false,
   "moveCount": 0,
   "lastMove": null,
   "lastCompletedGame": {
-    "result": "Draw",
+    "result": null,
     "winner": null,
-    "draw": true,
-    "finishedAt": "2026-03-06T10:16:23.183Z",
-    "finalMove": "C2"
+    "draw": false,
+    "finishedAt": null,
+    "finalMove": null
   }
->>>>>>> 9afe273 (✨ Enhance Tic-Tac-Toe game with last game summary and improved move handling)
 }

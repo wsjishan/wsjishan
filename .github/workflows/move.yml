@@ -42,7 +42,9 @@ jobs:
       - name: Apply move
         id: apply
         env:
-          ISSUE_TITLE: ${{ github.event.issue.title }}          ISSUE_USER: ${{ github.event.issue.user.login }}        run: node game/apply-move.js
+          ISSUE_TITLE: ${{ github.event.issue.title }}
+          ISSUE_USER: ${{ github.event.issue.user.login }}
+        run: node game/apply-move.js
 
       # ── 4. Render README (success only) ────────────────────────────────────
       - name: Render README

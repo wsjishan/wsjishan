@@ -1,6 +1,6 @@
 {
   "board": {
-    "A1": null,
+    "A1": "O",
     "A2": "X",
     "A3": null,
     "B1": null,
@@ -10,10 +10,10 @@
     "C2": null,
     "C3": null
   },
-  "currentPlayer": "O",
+  "currentPlayer": "X",
   "winner": null,
   "draw": false,
   "gameOver": false,
-  "moveCount": 1,
-  "lastMove": "A2"
+  "moveCount": 2,
+  "lastMove": "A1"
 }

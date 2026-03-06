@@ -129,14 +129,14 @@ function renderStatus(state) {
       return `🤝 **Game over — It's a draw!**`;
     }
   }
-  return `▶️ **Current turn: ${EMOJI[state.currentPlayer]} ${state.currentPlayer}**`;
+  return `▶ Current turn: ${EMOJI[state.currentPlayer]} ${state.currentPlayer}`;
 }
 
 /** Render the "Last Game" summary block. */
 function renderLastGame(state) {
   const lcg = state.lastCompletedGame;
   if (!lcg || !lcg.finishedAt) {
-    return '### 📋 Last Game\nNo completed games yet.';
+    return '📋 Last Game — No completed games yet.';
   }
 
   const gameNumLabel = lcg.gameNumber ? ` #${lcg.gameNumber}` : '';
@@ -159,14 +159,13 @@ function renderLastGame(state) {
 
   const resultLabel = lcg.draw ? '🤝 Draw' : `🏆 ${lcg.result}`;
   const moveLabel = lcg.player
-    ? `**${lcg.finalMove}** by @${lcg.player}`
-    : `**${lcg.finalMove}**`;
+    ? `${lcg.finalMove} by @${lcg.player}`
+    : lcg.finalMove;
 
   return [
-    `### 📋 Last Game${gameNumLabel}`,
-    `- Result: **${resultLabel}**`,
-    `- Winning move: ${moveLabel}`,
-    `- Finished: ${readable}`,
+    `📋 Last Game${gameNumLabel} — ${resultLabel}`,
+    `Winning move: ${moveLabel}`,
+    `Finished: ${readable}`,
   ].join('\n');
 }
 
@@ -174,10 +173,10 @@ function renderLastGame(state) {
 function renderStats(state) {
   const s = state.stats || { xWins: 0, oWins: 0, draws: 0 };
   return [
-    '### 📊 Stats',
-    `- ${EMOJI.X} X wins: **${s.xWins}**`,
-    `- ${EMOJI.O} O wins: **${s.oWins}**`,
-    `- 🤝 Draws: **${s.draws}**`,
+    '📊 Stats',
+    `${EMOJI.X} X wins: ${s.xWins}`,
+    `${EMOJI.O} O wins: ${s.oWins}`,
+    `🤝 Draws: ${s.draws}`,
   ].join('\n');
 }
 
@@ -191,19 +190,15 @@ function renderSection(state, repoUrl) {
       ? `#${state.lastCompletedGame.gameNumber}`
       : null;
   const lastMove = state.lastMove
-    ? `Last move: **${state.lastMove}**${state.lastMovePlayer ? ` by @${state.lastMovePlayer}` : ''}`
+    ? `Last move: ${state.lastMove}${state.lastMovePlayer ? ` by @${state.lastMovePlayer}` : ''}`
     : 'No moves yet.';
   const lastGame = renderLastGame(state);
   const stats = renderStats(state);
 
-  const gameHeader = `🔢 **Current Game: ${gameNum}**`;
-
   return [
     '## 🎮 Tic-Tac-Toe',
     '',
-    '> Play against the community! Click an empty square ⬜ to make your move.',
-    '',
-    gameHeader,
+    `Current Game: ${gameNum}`,
     '',
     lastGame,
     '',
@@ -213,11 +208,11 @@ function renderSection(state, repoUrl) {
     '',
     status,
     '',
-    'Click an empty square ⬜ to play your move.',
+    'Click an empty square 🔲 to play your move.',
     '',
     board,
     '',
-    `📌 ${lastMove}`,
+    `📍 ${lastMove}`,
   ].join('\n');
 }
 

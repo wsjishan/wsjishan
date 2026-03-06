@@ -162,13 +162,13 @@ function renderLastGame(state) {
     ? `${lcg.finalMove} by [@${lcg.player}](https://github.com/${lcg.player})`
     : lcg.finalMove;
 
-  return `📋 Last Game${gameNumLabel} — ${resultLabel}\nWinning move: ${moveLabel} • Finished: ${readable}`;
+  return `📋 Last Game${gameNumLabel} — ${resultLabel}\nFinal move: ${moveLabel} • Finished: ${readable}`;
 }
 
 /** Render the lifetime stats block. */
 function renderStats(state) {
   const s = state.stats || { xWins: 0, oWins: 0, draws: 0 };
-  return `📊 Stats — ${EMOJI.X} ${s.xWins} | ${EMOJI.O} ${s.oWins} | 🤝 ${s.draws}`;
+  return `📊 Stats — ${EMOJI.X} X wins: ${s.xWins} | ${EMOJI.O} O wins: ${s.oWins} | 🤝 Draws: ${s.draws}`;
 }
 
 /** Build the full fenced section that goes between the markers. */

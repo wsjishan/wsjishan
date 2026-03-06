@@ -159,20 +159,29 @@ function renderLastGame(state) {
 
   return [
     `📋 Last Game${gameNumLabel} — ${resultLabel}`,
-    `Winning move: ${moveLabel}`,
-    `Finished: ${readable}`,
+    `Final move: ${moveLabel} • Finished: ${readable}`,
   ].join('\n');
 }
 
 /** Render the lifetime stats block. */
 function renderStats(state) {
   const s = state.stats || { xWins: 0, oWins: 0, draws: 0 };
-  return [
-    '📊 Stats',
-    `${EMOJI.X} X wins: ${s.xWins}`,
-    `${EMOJI.O} O wins: ${s.oWins}`,
-    `🤝 Draws: ${s.draws}`,
-  ].join('\n');
+  return `📊 Stats — ${EMOJI.X} X wins: ${s.xWins} | ${EMOJI.O} O wins: ${s.oWins} | 🤝 Draws: ${s.draws}`;
+}
+
+/** Render the top-players leaderboard. */
+function renderLeaderboard(state) {
+  const players = state.players || {};
+  const sorted = Object.entries(players).sort((a, b) => b[1] - a[1]);
+  if (sorted.length === 0) {
+    return '🏆 Top Players\n_No wins yet._';
+  }
+  const medals = ['🥇', '🥈', '🥉'];
+  const lines = sorted.map(([player, wins], i) => {
+    const medal = medals[i] || '🏅';
+    return `${medal} **@${player}** — ${wins} win${wins !== 1 ? 's' : ''}`;
+  });
+  return ['🏆 Top Players', ...lines].join('\n');
 }
 
 /** Build the full fenced section that goes between the markers. */
@@ -192,9 +201,7 @@ function renderSection(state, repoUrl) {
   const leaderboard = renderLeaderboard(state);
 
   return [
-    '# 🎮 Community Tic-Tac-Toe',
-    '',
-    'Play against the community directly from my GitHub profile.',
+    '## 🎮 Tic-Tac-Toe',
     '',
     `Current Game: ${gameNum}`,
     '',
@@ -207,6 +214,8 @@ function renderSection(state, repoUrl) {
     '---',
     '',
     status,
+    '',
+    'Click an empty square 🔲 to play your move.',
     '',
     board,
     '',

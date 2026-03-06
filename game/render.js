@@ -223,9 +223,6 @@ function renderSection(state, repoUrl) {
     '👉 Click any empty square to make the next move.',
     '',
     board,
-    state.gameOver
-      ? ''
-      : '<p align="center"><sub>Click a blue square to make the next move</sub></p>',
     '',
     lastMove ? `🎯 ${lastMove}` : '🎯 Waiting for the first move...',
   ].join('\n');

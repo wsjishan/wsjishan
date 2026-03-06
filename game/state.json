@@ -1,8 +1,8 @@
 {
   "board": {
     "A1": null,
-    "A2": null,
-    "A3": null,
+    "A2": "O",
+    "A3": "X",
     "B1": null,
     "B2": null,
     "B3": null,
@@ -14,10 +14,10 @@
   "winner": null,
   "draw": false,
   "gameOver": false,
-  "moveCount": 0,
-  "lastMove": null,
-  "lastMovePlayer": null,
-  "botLastMove": null,
+  "moveCount": 2,
+  "lastMove": "A3",
+  "lastMovePlayer": "wsjishan",
+  "botLastMove": "A2",
   "gameNumber": 7,
   "stats": {
     "xWins": 3,
@@ -33,5 +33,8 @@
     "player": "wsjishan",
     "wonByBot": false,
     "gameNumber": 6
+  },
+  "players": {
+    "wsjishan": 0
   }
 }

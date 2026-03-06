@@ -208,8 +208,6 @@ function renderSection(state, repoUrl) {
     '',
     status,
     '',
-    '👉 Click any empty square to make the next move.',
-    '',
     board,
     '',
     lastMove ? `🎯 ${lastMove}` : '🎯 Waiting for the first move...',

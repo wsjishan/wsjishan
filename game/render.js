@@ -165,6 +165,27 @@ function renderLastGame(state) {
   return `📋 Last Game${gameNumLabel} — ${resultLabel}\nFinal move: ${moveLabel} • Finished: ${readable}`;
 }
 
+/** Render the Top 5 Players leaderboard. */
+function renderLeaderboard(state) {
+  const players = Object.entries(state.players || {});
+  if (players.length === 0) {
+    return '🏆 Top Players\n_No wins recorded yet._';
+  }
+
+  players.sort((a, b) => b[1] - a[1]);
+  const top = players.slice(0, 5);
+  const medals = ['🥇', '🥈', '🥉'];
+
+  const lines = ['🏆 Top Players'];
+  top.forEach(([username, wins], i) => {
+    const rank = i < medals.length ? medals[i] : `${i + 1}.`;
+    const winLabel = wins === 1 ? 'win' : 'wins';
+    lines.push(`${rank} **@${username}** — ${wins} ${winLabel}`);
+  });
+
+  return lines.join('\n');
+}
+
 /** Render the lifetime stats block. */
 function renderStats(state) {
   const s = state.stats || { xWins: 0, oWins: 0, draws: 0 };
@@ -185,6 +206,7 @@ function renderSection(state, repoUrl) {
     : null;
   const lastGame = renderLastGame(state);
   const stats = renderStats(state);
+  const leaderboard = renderLeaderboard(state);
 
   return [
     '# 🎮 Community Tic-Tac-Toe',
@@ -196,6 +218,8 @@ function renderSection(state, repoUrl) {
     lastGame,
     '',
     stats,
+    '',
+    leaderboard,
     '',
     '---',
     '',

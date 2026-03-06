@@ -10,6 +10,9 @@ Final move: A1 by [@wsjishan](https://github.com/wsjishan) • Finished: 2026-03
 
 📊 Stats — ❌ X wins: 2 | ⭕ O wins: 1 | 🤝 Draws: 0
 
+🏆 Top Players
+_No wins recorded yet._
+
 ---
 
 ▶ Current turn: ❌ X

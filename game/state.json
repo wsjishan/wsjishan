@@ -23,6 +23,7 @@
     "oWins": 1,
     "draws": 0
   },
+  "players": {},
   "lastCompletedGame": {
     "result": "O won",
     "winner": "O",

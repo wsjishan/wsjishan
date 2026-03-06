@@ -175,6 +175,12 @@ function main() {
     };
     if (winner === 'X') state.stats.xWins += 1;
     else state.stats.oWins += 1;
+
+    // Track per-player wins
+    if (!state.players) state.players = {};
+    if (!state.players[issueUser]) state.players[issueUser] = 0;
+    state.players[issueUser] += 1;
+
     gameEndedMsg = `${winner} won the game on ${cell}. A new game has started.`;
     console.log(`Winner: ${winner} — resetting board.`);
     resetActiveGame(state);

@@ -6,7 +6,9 @@
 > Play against the community! Click an empty square ⬜ to make your move.
 
 ### 📋 Last Game
-No completed games yet.
+- Result: **🏆 X won**
+- Finished: 2026-03-06 10:24 UTC
+- Final move: **C2**
 
 ---
 
@@ -14,11 +16,11 @@ No completed games yet.
 
 |   | 1 | 2 | 3 |
 |:-:|:-:|:-:|:-:|
-| **A** | [⬜](https://github.com/wsjishan/wsjishan/issues/new?title=Move%3A%20A1&body=I%20want%20to%20play%20at%20cell%20**A1**.%0A%0A_This%20issue%20was%20created%20by%20clicking%20a%20cell%20in%20the%20Tic-Tac-Toe%20README%20game._) | ❌ | [⬜](https://github.com/wsjishan/wsjishan/issues/new?title=Move%3A%20A3&body=I%20want%20to%20play%20at%20cell%20**A3**.%0A%0A_This%20issue%20was%20created%20by%20clicking%20a%20cell%20in%20the%20Tic-Tac-Toe%20README%20game._) |
-| **B** | [⬜](https://github.com/wsjishan/wsjishan/issues/new?title=Move%3A%20B1&body=I%20want%20to%20play%20at%20cell%20**B1**.%0A%0A_This%20issue%20was%20created%20by%20clicking%20a%20cell%20in%20the%20Tic-Tac-Toe%20README%20game._) | ❌ | ⭕ |
-| **C** | ⭕ | [⬜](https://github.com/wsjishan/wsjishan/issues/new?title=Move%3A%20C2&body=I%20want%20to%20play%20at%20cell%20**C2**.%0A%0A_This%20issue%20was%20created%20by%20clicking%20a%20cell%20in%20the%20Tic-Tac-Toe%20README%20game._) | [⬜](https://github.com/wsjishan/wsjishan/issues/new?title=Move%3A%20C3&body=I%20want%20to%20play%20at%20cell%20**C3**.%0A%0A_This%20issue%20was%20created%20by%20clicking%20a%20cell%20in%20the%20Tic-Tac-Toe%20README%20game._) |
+| **A** | [⬜](https://github.com/wsjishan/wsjishan/issues/new?title=Move%3A%20A1&body=I%20want%20to%20play%20at%20cell%20**A1**.%0A%0A_This%20issue%20was%20created%20by%20clicking%20a%20cell%20in%20the%20Tic-Tac-Toe%20README%20game._) | [⬜](https://github.com/wsjishan/wsjishan/issues/new?title=Move%3A%20A2&body=I%20want%20to%20play%20at%20cell%20**A2**.%0A%0A_This%20issue%20was%20created%20by%20clicking%20a%20cell%20in%20the%20Tic-Tac-Toe%20README%20game._) | [⬜](https://github.com/wsjishan/wsjishan/issues/new?title=Move%3A%20A3&body=I%20want%20to%20play%20at%20cell%20**A3**.%0A%0A_This%20issue%20was%20created%20by%20clicking%20a%20cell%20in%20the%20Tic-Tac-Toe%20README%20game._) |
+| **B** | [⬜](https://github.com/wsjishan/wsjishan/issues/new?title=Move%3A%20B1&body=I%20want%20to%20play%20at%20cell%20**B1**.%0A%0A_This%20issue%20was%20created%20by%20clicking%20a%20cell%20in%20the%20Tic-Tac-Toe%20README%20game._) | [⬜](https://github.com/wsjishan/wsjishan/issues/new?title=Move%3A%20B2&body=I%20want%20to%20play%20at%20cell%20**B2**.%0A%0A_This%20issue%20was%20created%20by%20clicking%20a%20cell%20in%20the%20Tic-Tac-Toe%20README%20game._) | [⬜](https://github.com/wsjishan/wsjishan/issues/new?title=Move%3A%20B3&body=I%20want%20to%20play%20at%20cell%20**B3**.%0A%0A_This%20issue%20was%20created%20by%20clicking%20a%20cell%20in%20the%20Tic-Tac-Toe%20README%20game._) |
+| **C** | [⬜](https://github.com/wsjishan/wsjishan/issues/new?title=Move%3A%20C1&body=I%20want%20to%20play%20at%20cell%20**C1**.%0A%0A_This%20issue%20was%20created%20by%20clicking%20a%20cell%20in%20the%20Tic-Tac-Toe%20README%20game._) | [⬜](https://github.com/wsjishan/wsjishan/issues/new?title=Move%3A%20C2&body=I%20want%20to%20play%20at%20cell%20**C2**.%0A%0A_This%20issue%20was%20created%20by%20clicking%20a%20cell%20in%20the%20Tic-Tac-Toe%20README%20game._) | [⬜](https://github.com/wsjishan/wsjishan/issues/new?title=Move%3A%20C3&body=I%20want%20to%20play%20at%20cell%20**C3**.%0A%0A_This%20issue%20was%20created%20by%20clicking%20a%20cell%20in%20the%20Tic-Tac-Toe%20README%20game._) |
 
-📌 Last move: **C1**
+📌 No moves yet.
 
 > Each click opens a pre-filled GitHub Issue — the board updates automatically via Actions.
 

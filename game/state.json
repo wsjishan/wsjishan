@@ -1,12 +1,12 @@
 {
   "board": {
     "A1": null,
-    "A2": "X",
+    "A2": null,
     "A3": null,
     "B1": null,
-    "B2": "X",
-    "B3": "O",
-    "C1": "O",
+    "B2": null,
+    "B3": null,
+    "C1": null,
     "C2": null,
     "C3": null
   },
@@ -14,13 +14,13 @@
   "winner": null,
   "draw": false,
   "gameOver": false,
-  "moveCount": 4,
-  "lastMove": "C1",
+  "moveCount": 0,
+  "lastMove": null,
   "lastCompletedGame": {
-    "result": null,
-    "winner": null,
+    "result": "X won",
+    "winner": "X",
     "draw": false,
-    "finishedAt": null,
-    "finalMove": null
+    "finishedAt": "2026-03-06T10:24:34.315Z",
+    "finalMove": "C2"
   }
 }

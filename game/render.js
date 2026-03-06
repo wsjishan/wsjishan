@@ -157,34 +157,22 @@ function renderLastGame(state) {
     ? `${lcg.finalMove} by [@${lcg.player}](https://github.com/${lcg.player})`
     : lcg.finalMove;
 
-  return `📋 Last Game${gameNumLabel} — ${resultLabel}\nFinal move: ${moveLabel} • Finished: ${readable}`;
-}
-
-/** Render the Top 5 Players leaderboard. */
-function renderLeaderboard(state) {
-  const players = Object.entries(state.players || {});
-  if (players.length === 0) {
-    return '🏆 Top Players\n_No wins recorded yet._';
-  }
-
-  players.sort((a, b) => b[1] - a[1]);
-  const top = players.slice(0, 5);
-  const medals = ['🥇', '🥈', '🥉'];
-
-  const lines = ['🏆 Top Players'];
-  top.forEach(([username, wins], i) => {
-    const rank = i < medals.length ? medals[i] : `${i + 1}.`;
-    const winLabel = wins === 1 ? 'win' : 'wins';
-    lines.push(`${rank} **@${username}** — ${wins} ${winLabel}`);
-  });
-
-  return lines.join('\n');
+  return [
+    `📋 Last Game${gameNumLabel} — ${resultLabel}`,
+    `Winning move: ${moveLabel}`,
+    `Finished: ${readable}`,
+  ].join('\n');
 }
 
 /** Render the lifetime stats block. */
 function renderStats(state) {
   const s = state.stats || { xWins: 0, oWins: 0, draws: 0 };
-  return `📊 Stats — ${EMOJI.X} X wins: ${s.xWins} | ${EMOJI.O} O wins: ${s.oWins} | 🤝 Draws: ${s.draws}`;
+  return [
+    '📊 Stats',
+    `${EMOJI.X} X wins: ${s.xWins}`,
+    `${EMOJI.O} O wins: ${s.oWins}`,
+    `🤝 Draws: ${s.draws}`,
+  ].join('\n');
 }
 
 /** Build the full fenced section that goes between the markers. */

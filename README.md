@@ -1,5 +1,5 @@
 <!-- TICTACTOE-START -->
-## 🎮 Tic-Tac-Toe
+## 🎮 Community Tic-Tac-Toe
 
 Current Game: #7
 

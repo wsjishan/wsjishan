@@ -38,7 +38,7 @@ const COLS = ['1', '2', '3'];
 const EMOJI = {
   X: '❌',
   O: '⭕',
-  empty: '⬜',
+  empty: '🟦',
 };
 
 // ---------------------------------------------------------------------------
@@ -87,14 +87,9 @@ function makeIssueUrl(cell, repoUrl) {
   return `${repoUrl}/issues/new?title=${title}&body=${body}`;
 }
 
-/** Render the 3×3 board as a GitHub-flavoured markdown table. */
+/** Render the 3×3 board as centered HTML rows. */
 function renderBoard(state, repoUrl) {
-  const lines = [];
-
-  lines.push('|   | 1 | 2 | 3 |');
-  lines.push('|:-:|:-:|:-:|:-:|');
-
-  for (const row of ROWS) {
+  const rows = ROWS.map((row) => {
     const cells = COLS.map((col) => {
       const key = `${row}${col}`;
       const value = state.board[key];
@@ -110,13 +105,13 @@ function renderBoard(state, repoUrl) {
       }
 
       // Active empty cell — clicking opens an issue
-      return `[${EMOJI.empty}](${makeIssueUrl(key, repoUrl)})`;
+      return `<a href="${makeIssueUrl(key, repoUrl)}">${EMOJI.empty}</a>`;
     });
 
-    lines.push(`| **${row}** | ${cells.join(' | ')} |`);
-  }
+    return `<p align="center">${cells.join('&nbsp;&nbsp;&nbsp;')}</p>`;
+  });
 
-  return lines.join('\n');
+  return rows.join('\n');
 }
 
 /** One-line status: whose turn / winner / draw. */
@@ -228,6 +223,9 @@ function renderSection(state, repoUrl) {
     '👉 Click any empty square to make the next move.',
     '',
     board,
+    state.gameOver
+      ? ''
+      : '<p align="center"><sub>Click a blue square to make the next move</sub></p>',
     '',
     lastMove ? `🎯 ${lastMove}` : '🎯 Waiting for the first move...',
   ].join('\n');

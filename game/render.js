@@ -69,11 +69,8 @@ function getRepoUrl() {
     // ignore — git may not be available or remote may not be set
   }
 
-  // 3. Fallback placeholder — links won't work until you deploy to GitHub
-  console.warn('WARNING: Could not determine repository URL.');
-  console.warn('Set GITHUB_REPOSITORY=owner/repo when running locally, e.g.:');
-  console.warn('  GITHUB_REPOSITORY=yourname/yourrepo node game/render.js');
-  return 'https://github.com/OWNER/REPO';
+  // 3. Fallback to the known repository so local runs still produce valid links.
+  return 'https://github.com/wsjishan/wsjishan';
 }
 
 // ---------------------------------------------------------------------------

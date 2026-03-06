@@ -2,7 +2,7 @@
   "board": {
     "A1": null,
     "A2": null,
-    "A3": null,
+    "A3": "X",
     "B1": null,
     "B2": null,
     "B3": null,
@@ -10,13 +10,13 @@
     "C2": null,
     "C3": null
   },
-  "currentPlayer": "X",
+  "currentPlayer": "O",
   "winner": null,
   "draw": false,
   "gameOver": false,
-  "moveCount": 0,
-  "lastMove": null,
-  "lastMovePlayer": null,
+  "moveCount": 1,
+  "lastMove": "A3",
+  "lastMovePlayer": "wsjishan",
   "gameNumber": 3,
   "stats": {
     "xWins": 2,

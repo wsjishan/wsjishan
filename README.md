@@ -6,7 +6,7 @@
 Current Game: #3
 
 📋 Last Game #2 — 🏆 X won
-Winning move: C1 by @wsjishan
+Winning move: C1 by [@wsjishan](https://github.com/wsjishan)
 Finished: 2026-03-06 11:02 UTC
 
 📊 Stats

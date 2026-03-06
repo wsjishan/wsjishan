@@ -196,9 +196,7 @@ function renderSection(state, repoUrl) {
   const lastGame = renderLastGame(state);
   const stats = renderStats(state);
 
-  const gameHeader = lastGameNum
-    ? `🔢 **Current Game: ${gameNum}** | 📋 Last Game: ${lastGameNum}`
-    : `🔢 **Current Game: ${gameNum}**`;
+  const gameHeader = `🔢 **Current Game: ${gameNum}**`;
 
   return [
     '## 🎮 Tic-Tac-Toe',
@@ -222,8 +220,6 @@ function renderSection(state, repoUrl) {
     `📌 ${lastMove}`,
     '',
     '> Each click opens a pre-filled GitHub Issue — the board updates automatically via Actions.',
-    '',
-    '_Powered by GitHub Issues + Actions_',
   ].join('\n');
 }
 

@@ -5,7 +5,7 @@
 
 > Play against the community! Click an empty square ⬜ to make your move.
 
-🔢 **Current Game: #3** | 📋 Last Game: #2
+🔢 **Current Game: #3**
 
 ### 📋 Last Game #2
 - Result: **🏆 X won**
@@ -32,7 +32,5 @@ Click an empty square ⬜ to play your move.
 📌 No moves yet.
 
 > Each click opens a pre-filled GitHub Issue — the board updates automatically via Actions.
-
-_Powered by GitHub Issues + Actions_
 <!-- TICTACTOE-END -->
 

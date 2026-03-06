@@ -1,10 +1,10 @@
 {
   "board": {
-    "A1": "O",
-    "A2": "O",
-    "A3": "X",
+    "A1": null,
+    "A2": null,
+    "A3": null,
     "B1": null,
-    "B2": "X",
+    "B2": null,
     "B3": null,
     "C1": null,
     "C2": null,
@@ -14,13 +14,13 @@
   "winner": null,
   "draw": false,
   "gameOver": false,
-  "moveCount": 4,
-  "lastMove": "B2",
-  "lastMovePlayer": "wsjishan",
-  "botLastMove": "A1",
-  "gameNumber": 7,
+  "moveCount": 0,
+  "lastMove": null,
+  "lastMovePlayer": null,
+  "botLastMove": null,
+  "gameNumber": 8,
   "stats": {
-    "xWins": 3,
+    "xWins": 4,
     "oWins": 3,
     "draws": 0
   },
@@ -28,13 +28,13 @@
     "result": "X won",
     "winner": "X",
     "draw": false,
-    "finishedAt": "2026-03-06T14:34:32.248Z",
-    "finalMove": "C2",
+    "finishedAt": "2026-03-06T16:58:07.266Z",
+    "finalMove": "C1",
     "player": "wsjishan",
     "wonByBot": false,
-    "gameNumber": 6
+    "gameNumber": 7
   },
   "players": {
-    "wsjishan": 0
+    "wsjishan": 1
   }
 }

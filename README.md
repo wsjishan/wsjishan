@@ -1,5 +1,5 @@
 <!-- TICTACTOE-START -->
-## 🎮 Tic-Tac-Toe — Player vs Random Bot
+🎮 Interactive Tic-Tac-Toe
 
 Play against a random bot directly from my GitHub profile.
 

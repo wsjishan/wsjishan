@@ -1,7 +1,7 @@
 <!-- TICTACTOE-START -->
 ### 🎮 Interactive Tic-Tac-Toe
 
-Play against a random bot directly from my GitHub profile.
+Play against a random bot.
 
 You are ❌ X. The bot is ⭕ O. | Current Game: #10
 

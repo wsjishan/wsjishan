@@ -2,22 +2,22 @@
   "board": {
     "A1": null,
     "A2": null,
-    "A3": null,
+    "A3": "X",
     "B1": "O",
     "B2": "X",
     "B3": null,
     "C1": null,
     "C2": null,
-    "C3": null
+    "C3": "O"
   },
   "currentPlayer": "X",
   "winner": null,
   "draw": false,
   "gameOver": false,
-  "moveCount": 2,
-  "lastMove": "B2",
+  "moveCount": 4,
+  "lastMove": "A3",
   "lastMovePlayer": "kibria-rafi",
-  "botLastMove": "B1",
+  "botLastMove": "C3",
   "gameNumber": 12,
   "stats": {
     "xWins": 7,

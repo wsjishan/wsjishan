@@ -1,9 +1,9 @@
 {
   "board": {
-    "A1": null,
+    "A1": "X",
     "A2": null,
     "A3": null,
-    "B1": null,
+    "B1": "O",
     "B2": null,
     "B3": null,
     "C1": null,
@@ -14,10 +14,10 @@
   "winner": null,
   "draw": false,
   "gameOver": false,
-  "moveCount": 0,
-  "lastMove": null,
-  "lastMovePlayer": null,
-  "botLastMove": null,
+  "moveCount": 2,
+  "lastMove": "A1",
+  "lastMovePlayer": "kibria-rafi",
+  "botLastMove": "B1",
   "gameNumber": 11,
   "stats": {
     "xWins": 7,
@@ -35,6 +35,7 @@
     "gameNumber": 10
   },
   "players": {
-    "wsjishan": 7
+    "wsjishan": 7,
+    "kibria-rafi": 0
   }
 }

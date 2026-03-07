@@ -179,7 +179,7 @@ function main() {
     };
     state.stats.xWins += 1;
     state.players[issueUser] += 1;
-    gameEndedMsg = `You won the game on ${cell}! A new game has started.`;
+    gameEndedMsg = `Player wins at ${cell}! A new game has started.`;
     console.log('Winner: X (human) — resetting board.');
     resetActiveGame(state);
   } else if (checkDraw(state.board)) {

@@ -118,7 +118,7 @@ function renderBoard(state, repoUrl) {
 function renderStatus(state) {
   if (state.gameOver) {
     if (state.winner === 'X') {
-      return `🏆 **Game over — You win!**`;
+      return `🏆 **Game over — Player wins!**`;
     }
     if (state.winner === 'O') {
       return `🤖 **Game over — The bot wins!**`;
@@ -155,14 +155,17 @@ function renderLastGame(state) {
     ' UTC',
   ].join('');
 
-  const resultLabel = lcg.draw
-    ? '🤝 Draw'
-    : lcg.wonByBot
-      ? '🤖 Bot won'
-      : '🏆 You won';
+  if (lcg.draw) {
+    return [
+      `📋 Last Game${gameNumLabel} — 🤝 Draw`,
+      `Finished: ${readable}`,
+    ].join('\n');
+  }
+
+  const resultLabel = lcg.wonByBot ? '🤖 Bot won' : '🏆 Player won';
 
   const moveLabel = lcg.wonByBot
-    ? `${lcg.finalMove} by 🤖 Bot`
+    ? lcg.finalMove
     : lcg.player
       ? `${lcg.finalMove} by [@${lcg.player}](https://github.com/${lcg.player})`
       : lcg.finalMove;
@@ -176,20 +179,22 @@ function renderLastGame(state) {
 /** Render the lifetime stats block. */
 function renderStats(state) {
   const s = state.stats || { xWins: 0, oWins: 0, draws: 0 };
-  return `📊 Stats — ${EMOJI.X} Your wins: ${s.xWins} | 🤖 Bot wins: ${s.oWins} | 🤝 Draws: ${s.draws}`;
+  return `📊 Stats — ${EMOJI.X} Wins: ${s.xWins} | 🤖 Bot wins: ${s.oWins} | 🤝 Draws: ${s.draws}`;
 }
 
 /** Render the top-players leaderboard. */
 function renderLeaderboard(state) {
   const players = state.players || {};
-  const sorted = Object.entries(players).sort((a, b) => b[1] - a[1]);
+  const sorted = Object.entries(players)
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 5);
   if (sorted.length === 0) {
     return '🏆 Top Players\n_No wins yet._';
   }
   const medals = ['🥇', '🥈', '🥉'];
   const lines = sorted.map(([player, wins], i) => {
-    const medal = medals[i] || '🏅';
-    return `${medal} **@${player}** — ${wins} win${wins !== 1 ? 's' : ''}`;
+    const prefix = medals[i] || `${i + 1}.`;
+    return `${prefix} **@${player}** — ${wins} win${wins !== 1 ? 's' : ''}`;
   });
   return ['🏆 Top Players', ...lines].join('\n');
 }
@@ -201,9 +206,10 @@ function renderSection(state, repoUrl) {
   const gameNum = `#${state.gameNumber || 1}`;
   const lastGame = renderLastGame(state);
   const stats = renderStats(state);
+  const leaderboard = renderLeaderboard(state);
 
   const lastMoveLine = state.lastMove
-    ? `🎯 Your last move: **${state.lastMove}**${
+    ? `🎯 Last move: **${state.lastMove}**${
         state.botLastMove
           ? ` | 🤖 Bot's last move: **${state.botLastMove}**`
           : ''
@@ -215,17 +221,19 @@ function renderSection(state, repoUrl) {
     '',
     'Play against a random bot directly from my GitHub profile.',
     '',
-    `**You are ${EMOJI.X} X.** The bot is ${EMOJI.O} O. | Current Game: ${gameNum}`,
+    `You are ${EMOJI.X} X. The bot is ${EMOJI.O} O. | Current Game: ${gameNum}`,
     '',
     lastGame,
     '',
     stats,
     '',
+    leaderboard,
+    '',
     '---',
     '',
     status,
     '',
-    'Click an empty 🟦 to make your move. The bot will respond instantly.',
+    'Click an empty blue square to make your move. The bot responds instantly.',
     '',
     board,
     '',

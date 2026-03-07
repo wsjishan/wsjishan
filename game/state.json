@@ -2,40 +2,40 @@
   "board": {
     "A1": null,
     "A2": null,
-    "A3": "X",
-    "B1": "O",
-    "B2": "X",
+    "A3": null,
+    "B1": null,
+    "B2": null,
     "B3": null,
     "C1": null,
     "C2": null,
-    "C3": "O"
+    "C3": null
   },
   "currentPlayer": "X",
   "winner": null,
   "draw": false,
   "gameOver": false,
-  "moveCount": 4,
-  "lastMove": "A3",
-  "lastMovePlayer": "kibria-rafi",
-  "botLastMove": "C3",
-  "gameNumber": 12,
+  "moveCount": 0,
+  "lastMove": null,
+  "lastMovePlayer": null,
+  "botLastMove": null,
+  "gameNumber": 13,
   "stats": {
-    "xWins": 7,
+    "xWins": 8,
     "oWins": 3,
     "draws": 1
   },
   "lastCompletedGame": {
-    "result": "Draw",
-    "winner": null,
-    "draw": true,
-    "finishedAt": "2026-03-07T21:26:32.635Z",
-    "finalMove": "B3",
+    "result": "X won",
+    "winner": "X",
+    "draw": false,
+    "finishedAt": "2026-03-07T21:27:29.298Z",
+    "finalMove": "C1",
     "player": "kibria-rafi",
     "wonByBot": false,
-    "gameNumber": 11
+    "gameNumber": 12
   },
   "players": {
     "wsjishan": 7,
-    "kibria-rafi": 0
+    "kibria-rafi": 1
   }
 }

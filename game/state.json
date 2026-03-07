@@ -6,18 +6,18 @@
     "B1": null,
     "B2": "X",
     "B3": "O",
-    "C1": null,
+    "C1": "X",
     "C2": "O",
-    "C3": null
+    "C3": "O"
   },
   "currentPlayer": "X",
   "winner": null,
   "draw": false,
   "gameOver": false,
-  "moveCount": 4,
-  "lastMove": "B2",
+  "moveCount": 6,
+  "lastMove": "C1",
   "lastMovePlayer": "wsjishan",
-  "botLastMove": "C2",
+  "botLastMove": "C3",
   "gameNumber": 9,
   "stats": {
     "xWins": 5,

@@ -247,6 +247,18 @@ function main() {
     // else game continues; currentPlayer stays 'X' for next human turn
   }
 
+  // --- Consistency check: leaderboard totals must match stats ---
+  const totalLeaderboardWins = Object.values(state.players || {}).reduce(
+    (a, b) => a + b,
+    0
+  );
+  const totalHumanWins = state.stats?.xWins || 0;
+  if (totalLeaderboardWins !== totalHumanWins) {
+    console.warn(
+      `[WARN] Leaderboard total (${totalLeaderboardWins}) does not match stats xWins (${totalHumanWins}).`
+    );
+  }
+
   // --- 6. Persist updated state ---
   fs.writeFileSync(STATE_FILE, JSON.stringify(state, null, 2) + '\n');
   console.log('state.json saved.');

@@ -16,7 +16,7 @@ Final move: C1 by [@kibria-rafi](https://github.com/kibria-rafi) • Finished: 2
 
 ---
 
-▶ **Your turn!** You are ❌ X — click an empty square below.
+▶ **Your turn!** You are X — click an empty square below.
 
 Click an empty blue square to make your move. The bot responds instantly.
 
